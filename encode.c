@@ -14,7 +14,11 @@ char head_parity_bit(char c);
 void print_encoded_char(char c);
 
 int main(int argc, char** argv){
-  char* message = "AHHHH HALLLO";
+  if(argc < 2){
+    printf("need to add a message as an argument\n");
+    return 0;
+  }
+  char* message = argv[1];
   short* encoded_message = build_encoded_message(message);
   int status = write_shorts_to_image("./img/image.png", encoded_message, strlen(message));
   printf("Number of element written: %d\n", status);
