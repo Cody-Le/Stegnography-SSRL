@@ -19,5 +19,13 @@ encode.o: encode.c utility.o image.o
 decode.o: decode.c utility.o image.o
 	$(CC) -c decode.c
 
+run_encode: encode
+	./encode.out
+
+
+run_decode: decode
+	./decode.out
+
+
 clean:
 	rm *.o *.out *~
