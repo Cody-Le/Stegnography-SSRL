@@ -6,43 +6,15 @@
 
 
 int main(int argc, char** argv){
-  long IEND_CHUNK = 0x826042ae444e4549;
-  
   char* img_dir = "./img/image.png";
-  FILE *file = fopen(img_dir, "r");
-  if(file == NULL){
-    return 0;
-  }
-
-  long file_size = ftell(file);
-  printf("FILE SIZE IS : %ld\n", file_size);
-  long check_range = 256;
-  int offset = 0;
-  int message_length = 0;
-  long check_buffer[1];
-  while(check_range > 0){
-    offset++;
-    fseek(file, -offset * sizeof(short), SEEK_END);
-    long byte_read = fread(check_buffer, sizeof(long), 1, file);
-    check_range -= 1;
-    long check = check_buffer[0] ^ IEND_CHUNK;
-    printf("output : %lx | byte_read: %ld\n", check, byte_read);
-    if(check == 0){
-      check_range = 0;
-    }
-    
-  }
-  message_length = offset - 4;
-  printf("message length: %d\n", message_length);
-  fseek(file,-message_length * 2, SEEK_END);
-  short* encoded_message = (short*)malloc(sizeof(short) * message_length);
-  fread(encoded_message, sizeof(short), message_length, file);
-  for (int i = 0; i < message_length; i++){
+  short* encoded_message = message_from_file(img_dir);
+  int length = sizeof(encoded_message)/sizeof(short);
+  printf("length gotten in main %d\n", length );
+  for (int i = 0; i < length; i++){
     printf("%hx ", encoded_message[i]);
   
   }
   printf("\n");
   
-  fclose(file);
 
 }
