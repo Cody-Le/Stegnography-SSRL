@@ -5,7 +5,6 @@ int write_shorts_to_image(char* img_dir, short* data, int m_size){
   FILE *file = fopen(img_dir, "a+");
   if (file != NULL){
     int size_t = fwrite(data, sizeof(short), m_size, file);
-    int size_f = fwrite(&m_size, sizeof(short), 1, file);
     fclose(file);
     return size_t;
   }else{
