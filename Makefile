@@ -20,7 +20,7 @@ decode.o: decode.c utility.o image.o
 	$(CC) -c decode.c
 
 run_encode: encode
-	./encode.out
+	./encode.out hello
 
 
 run_decode: decode

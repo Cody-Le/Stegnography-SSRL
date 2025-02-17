@@ -1,17 +1,13 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include "utility.h"
 #include "image.h"
-#include <fcntl.h>
 
-void append_string_to_png();
-void read_binary_png();
 short* build_encoded_message(char* message);
 char hamming_encode(char c);
 char head_parity_bit(char c);
-void print_encoded_char(char c);
+
 
 int main(int argc, char** argv){
   if(argc < 2){
@@ -35,7 +31,8 @@ short* build_encoded_message(char* message){
     char c2 = (c & 15);
     unsigned char c1_encoded = hamming_encode(c1);
     unsigned char c2_encoded = hamming_encode(c2);
-    short c_short = ((short) c1_encoded << 4) | (short) c2_encoded;
+    printf("original c: %c (%s) -> c1, %s | c2, %s\n", c, byte_from_char(c), byte_from_char(c1_encoded), byte_from_char(c2_encoded));
+    short c_short = ((short) c1_encoded << 8) | (short) c2_encoded;
     encoded_m[i/2] = c_short;
 
   }
