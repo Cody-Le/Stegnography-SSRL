@@ -15,6 +15,7 @@ int main(int argc, char** argv){
   char* message = decode_message(encoded_message);
   printf("%s\n", message);
   free(encoded_message.data);
+  
 
 }
 
@@ -47,12 +48,15 @@ char dehamming_code(char c_encoded){
 char correct_bits(char c_encoded){
   int* parity_matrix = get_parity_check_matrix();
   char error_location = byte_mul(c_encoded, parity_matrix, 7);
-  char correction_bit;
+  char correction_bit = 0;
   if(error_location > 0){
     correction_bit = generate_correction_bit(error_location);
-    printf("correction bit at %s\n", byte_from_char(correction_bit));
+    char* correct_binary =byte_from_char(correction_bit);
+    printf("correction bit at %s\n", correct_binary);
+    free(correct_binary);
 
   }
+  free(correction_bit);
   free(parity_matrix);
   return c_encoded ^ correction_bit;
 }
