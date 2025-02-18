@@ -58,6 +58,7 @@ char* byte_from_char(unsigned char n){
     }
     binary_index++;
   }
+  binary[8] = '\0';
 
   
   return binary;

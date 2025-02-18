@@ -1,11 +1,12 @@
 
 CC = gcc
+EXT = exe
 
 encode: encode.o utility.o image.o
-	$(CC) -o encode.out encode.o utility.o image.o
+	$(CC) -o encode.$(EXT) encode.o utility.o image.o 
 
 decode: decode.o utility.o image.o
-	$(CC) -o decode.out decode.o utility.o image.o
+	$(CC) -o decode.$(EXT) decode.o utility.o image.o
 
 image.o: image.c image.h
 	$(CC) -c image.c
@@ -24,7 +25,7 @@ run_encode: encode
 
 
 run_decode: decode
-	./decode.out
+	./decode.$(EXT)
 
 
 clean:

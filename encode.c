@@ -44,6 +44,7 @@ char hamming_encode(char c){
   int* encode_matrix = get_generator_matrix();
   int encoded_byte = byte_mul((int) c, encode_matrix,4);
   char with_head = head_parity_bit(encoded_byte);
+  free(encode_matrix)
   return (char) encoded_byte;
 }
 

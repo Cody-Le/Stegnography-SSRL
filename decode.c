@@ -1,36 +1,76 @@
 #include "image.h"
 #include "utility.h"
+#include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 
 char* decode_message(EncodedMessage encoded_message);
 char dehamming_code(char c_encoded);
+char correct_bits(char c);
+char generate_correction_bit(char error);
 
 int main(int argc, char** argv){
   char* img_dir = "./img/image.png";
   EncodedMessage encoded_message = message_from_file(img_dir);
-  decode_message(encoded_message);
-  printf("\n");
+  char* message = decode_message(encoded_message);
+  printf("%s\n", message);
   free(encoded_message.data);
 
 }
 
 
 char* decode_message(EncodedMessage encoded_message){
-  int* parity_matrix = get_parity_check_matrix();
-  char* message = (char*)malloc(sizeof(char) * encoded_message.size);
+  
+  char* message = (char*)malloc(sizeof(char) * (encoded_message.size + 1));
   for (int i = 0; i < encoded_message.size; i++){
     short c_encoded = encoded_message.data[i];
     char c1_encoded = (char)(c_encoded >> 8);
     char c2_encoded = (char)c_encoded;
     char c1 = dehamming_code(c1_encoded);
     char c2 = dehamming_code(c2_encoded);
+    
     char c = (c1 << 4) | c2;
-    printf("%c \n", c);
+    //printf("%c\n", c);
+    message[i] = c;
 
   }
+  message[encoded_message.size] = '\0';
+  printf("length of message comparing to length of encoded message is: %d | %d\n", strlen(message), encoded_message.size);
+  return message;
 }
 char dehamming_code(char c_encoded){
+  c_encoded = correct_bits(c_encoded);
   char c = c_encoded & 15;
   return c;
 }
+
+char correct_bits(char c_encoded){
+  int* parity_matrix = get_parity_check_matrix();
+  char error_location = byte_mul(c_encoded, parity_matrix, 7);
+  char correction_bit;
+  if(error_location > 0){
+    correction_bit = generate_correction_bit(error_location);
+    printf("correction bit at %s\n", byte_from_char(correction_bit));
+
+  }
+  free(parity_matrix);
+  return c_encoded ^ correction_bit;
+}
+
+char generate_correction_bit(char error){
+  if(error == 4){
+    return 1 << 6;
+  }else if(error == 2){
+    return 1 << 5;
+  }else if(error == 1){
+    return 1 << 4;
+  }else if(error == 3){
+    return 1 << 3;
+  }else if(error == 5){
+    return 1 << 2;
+  }else if(error == 6){
+    return 1 << 1;
+  }else if(error == 7){
+    return 1;
+  }
+} 
