@@ -31,7 +31,6 @@ char* decode_message(EncodedMessage encoded_message){
     char c2 = dehamming_code(c2_encoded);
     
     char c = (c1 << 4) | c2;
-    //printf("%c\n", c);
     message[i] = c;
 
   }
@@ -51,7 +50,7 @@ char correct_bits(char c_encoded){
   char correction_bit = 0;
   if(error_location > 0){
     correction_bit = generate_correction_bit(error_location);
-    char* correct_binary =byte_from_char(correction_bit);
+    char* correct_binary = byte_from_char(correction_bit);
     printf("correction bit at %s\n", correct_binary);
     free(correct_binary);
 

@@ -31,6 +31,7 @@ short* build_encoded_message(char* message){
     char c2 = (c & 15);
     unsigned char c1_encoded = hamming_encode(c1);
     unsigned char c2_encoded = hamming_encode(c2);
+    // A lot of memory leak down here 
     printf("original c: %c (%s) -> c1, %s | c2, %s\n", c, byte_from_char(c), byte_from_char(c1_encoded), byte_from_char(c2_encoded));
     short c_short = ((short) c1_encoded << 8) | (short) c2_encoded;
     encoded_m[i/2] = c_short;
@@ -44,7 +45,7 @@ char hamming_encode(char c){
   int* encode_matrix = get_generator_matrix();
   int encoded_byte = byte_mul((int) c, encode_matrix,4);
   char with_head = head_parity_bit(encoded_byte);
-  free(encode_matrix)
+  free(encode_matrix);
   return (char) encoded_byte;
 }
 
