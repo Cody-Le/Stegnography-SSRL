@@ -35,7 +35,7 @@ EncodedMessage message_from_file(char* img_dir){
 }
 
 int message_length_from_file(FILE* file){
-  unsigned long IEND_CHUNK = 0x826042ae444e4549; //IEND CHUNK in hex form
+  long IEND_CHUNK = 0x826042ae444e4549; //IEND CHUNK in hex form
   
   if(file == NULL){
     return -1;
@@ -63,3 +63,28 @@ int message_length_from_file(FILE* file){
 }
 
 
+void remove_message(char* img_dir){
+  FILE* file = fopen(img_dir, "a+");
+  if(file == NULL){
+    return;
+  }
+  int message_length = message_length_from_file(file);
+  fseek(file, -message_length * 2, SEEK_END);
+  unsigned long copy_to = ftell(file);
+  printf("location %ld\n", copy_to);
+  copy_img_in_range(img_dir, "./img/new_image.png", copy_to);
+}
+
+
+char* copy_img_in_range(char* in_img_dir, char* out_img_dir, unsigned long copy_to){
+  FILE* in_file = fopen(in_img_dir, "rb");
+  FILE* out_file = fopen(out_img_dir, "wb");
+  
+  char* buffer = (char*) malloc(sizeof(char) * copy_to);
+  size_t bytes = fread(buffer, 1, copy_to, in_file);
+  fwrite(buffer, 1, copy_to, out_file);
+
+  return out_img_dir;
+
+
+}

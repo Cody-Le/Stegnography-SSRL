@@ -7,8 +7,8 @@
 
 bool head_parity_bit(char c_encoded);
 char* decode_message(EncodedMessage encoded_message);
-char dehamming_code(char c_encoded);
-char correct_bits(char c);
+char dehamming_code(char c_encoded, int index);
+char correct_bits(char c, int index);
 char generate_correction_bit(char error);
 
 int main(int argc, char** argv){
@@ -29,18 +29,23 @@ char* decode_message(EncodedMessage encoded_message){
     short c_encoded = encoded_message.data[i];
     char c1_encoded = (char)(c_encoded >> 8);
     char c2_encoded = (char)c_encoded;
-    char c1 = dehamming_code(c1_encoded);
-    char c2 = dehamming_code(c2_encoded);
+    char c1 = dehamming_code(c1_encoded, i);
+    char c2 = dehamming_code(c2_encoded, i);
     
     char c = (c1 << 4) | c2;
+    if(c == '\0'){
+      printf("ignoring a null character that has been detected in between message\n");
+      c = (c1_encoded << 4) | (c2 & 15);
+    }
+    
     message[i] = c;
 
   }
   message[encoded_message.size] = '\0';
   return message;
 }
-char dehamming_code(char c_encoded){
-  c_encoded = correct_bits(c_encoded);
+char dehamming_code(char c_encoded, int index){
+  c_encoded = correct_bits(c_encoded, index);
   char c = c_encoded & 15;
   return c;
 }
@@ -48,20 +53,20 @@ char dehamming_code(char c_encoded){
 
 
 
-char correct_bits(char c_encoded){
+char correct_bits(char c_encoded, int index){
   int* parity_matrix = get_parity_check_matrix();
   char error_location = byte_mul(c_encoded, parity_matrix, 7);
   char correction_bit = 0;
   if(!head_parity_bit(c_encoded)){
     if(error_location == 0){
-      printf("A multi bit flip has occured, unable to correct\n");
+      printf("a multi bit flip has been detected at %d\n", index);
       return c_encoded;
     }
   }
   if(error_location > 0){
     correction_bit = generate_correction_bit(error_location);
     char* correct_binary = byte_from_char(correction_bit);
-    printf("correction bit at %s\n", correct_binary);
+    printf("single bit flip on char at %d, correcting with byte of %s\n", index, correct_binary);
     free(correct_binary);
   }
   free(parity_matrix);
@@ -70,14 +75,14 @@ char correct_bits(char c_encoded){
 
 //Check if the encoded parity bit is correct
 bool head_parity_bit(char c_encoded){
-  int c_no_head = c_encoded & 0x01111111;
+  char c_no_head = c_encoded & 127;
   int parity = 0;
   int mask = 1;
   for (int i = 0; i < 8; i++){
     parity = parity ^ ((c_no_head & mask) >> i);
     mask = mask << 1;
   }
-  int encoded_parity = c_encoded >> 7;
+  char encoded_parity = (c_encoded >> 7) & 1;
   return parity == encoded_parity;
 }
 

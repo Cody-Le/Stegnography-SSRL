@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "utility.h"
+#include <stdbool.h>
 #include "image.h"
 
 short* build_encoded_message(char* message);
@@ -10,6 +11,7 @@ char head_parity_bit(char c);
 
 
 int main(int argc, char** argv){
+  remove_message("./img/image.png");
   if(argc < 2){
     printf("need to add a message as an argument\n");
     return 0;
