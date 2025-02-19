@@ -72,7 +72,9 @@ void remove_message(char* img_dir){
   fseek(file, -message_length * 2, SEEK_END);
   unsigned long copy_to = ftell(file);
   printf("location %ld\n", copy_to);
-  copy_img_in_range(img_dir, "./img/new_image.png", copy_to);
+  char* new_image = copy_img_in_range(img_dir, "./img/new_image.png", copy_to);
+  remove(img_dir);
+  rename(new_image, img_dir);
 }
 
 
