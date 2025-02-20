@@ -1,5 +1,5 @@
-#ifndef __ENCODE_
-#define __ENCODE_
+#ifndef ENCODE_H
+#define ENCODE_H
 
 #include <stdio.h>
 #include <string.h>

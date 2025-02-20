@@ -24,9 +24,7 @@ int main(int argc, char** argv){
 
 }
 
-/*
-Decode the message read from the bottom of the image. 
-*/
+
 char* decode_message(EncodedMessage encoded_message){
   
   char* message = (char*)malloc(sizeof(char) * (encoded_message.size + 1));
@@ -50,9 +48,7 @@ char* decode_message(EncodedMessage encoded_message){
   return message;
 }
 
-//decode half a byte from it's hamming code
-//counter part. The index is passed in 
-//to print out the location of the bit flip
+
 char dehamming_code(char c_encoded, int index){
   c_encoded = correct_bits(c_encoded, index);
   char c = c_encoded & 15;
@@ -61,8 +57,6 @@ char dehamming_code(char c_encoded, int index){
 
 
 
-//Correcting any single bit flip that might have occured
-//and detect multiple bit flip cases. 
 char correct_bits(char c_encoded, int index){
   int* parity_matrix = get_parity_check_matrix();
   char error_location = byte_mul(c_encoded, parity_matrix, 7);
@@ -83,7 +77,7 @@ char correct_bits(char c_encoded, int index){
   return c_encoded ^ correction_bit;
 }
 
-//Check if the encoded parity bit is correct.
+
 bool head_parity_bit(char c_encoded){
   char c_no_head = c_encoded & 127;
   int parity = 0;

@@ -1,5 +1,5 @@
-#ifndef __IMAGE_H
-#define __IMAGE_H
+#ifndef IMAGE_H
+#define IMAGE_H
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>

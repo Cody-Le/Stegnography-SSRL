@@ -1,5 +1,5 @@
-#ifndef DECODE
-#define DECODE
+#ifndef DECODE_H
+#define DECODE_H
 
 #include "image.h"
 #include "utility.h"
