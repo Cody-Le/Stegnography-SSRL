@@ -14,8 +14,8 @@ image.o: image.c image.h
 utility.o: utility.c utility.h
 	$(CC) -c utility.c
 
-encode.o: encode.c utility.o image.o
-	$(CC) -c encode.c
+encode.o: encode.c encode.h utility.o image.o
+	$(CC) -c encode.c encode.h
 
 decode.o: decode.c utility.o image.o
 	$(CC) -c decode.c

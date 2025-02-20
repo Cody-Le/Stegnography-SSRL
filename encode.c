@@ -1,13 +1,6 @@
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include "utility.h"
-#include <stdbool.h>
-#include "image.h"
+#include "encode.h"
 
-short* build_encoded_message(char* message);
-char hamming_encode(char c);
-char head_parity_bit(char c);
+
 
 
 int main(int argc, char** argv){

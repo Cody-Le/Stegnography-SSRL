@@ -69,10 +69,15 @@ void remove_message(char* img_dir){
     return;
   }
   int message_length = message_length_from_file(file);
+  
   fseek(file, -message_length * 2, SEEK_END);
+  if(message_length == 0){
+    return;
+  }
   unsigned long copy_to = ftell(file);
   printf("location %ld\n", copy_to);
   char* new_image = copy_img_in_range(img_dir, "./img/new_image.png", copy_to);
+  fclose(file);
   remove(img_dir);
   rename(new_image, img_dir);
 }
@@ -85,7 +90,8 @@ char* copy_img_in_range(char* in_img_dir, char* out_img_dir, unsigned long copy_
   char* buffer = (char*) malloc(sizeof(char) * copy_to);
   size_t bytes = fread(buffer, 1, copy_to, in_file);
   fwrite(buffer, 1, copy_to, out_file);
-
+  fclose(in_file);
+  fclose(out_file);
   return out_img_dir;
 
 

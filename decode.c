@@ -86,6 +86,8 @@ bool head_parity_bit(char c_encoded){
   return parity == encoded_parity;
 }
 
+
+
 char generate_correction_bit(char error){
   if(error == 4){
     return 1 << 6;
