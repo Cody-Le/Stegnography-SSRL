@@ -1,19 +1,36 @@
 #include "encode.h"
 
 
-
+/*
+This program is responsible to for taking a message and image directory from
+the argument and encode it in the Hamming(8,4) extended format.
+*/
 
 int main(int argc, char** argv){
-  remove_message("./img/image.png");
-  if(argc < 2){
-    printf("need to add a message as an argument\n");
+
+  
+  if(argc < 3){
+    printf("Need to add arguments in format: message image_dir\n");
+    return 0;
+  }
+  if(strcmp(argv[2], "copy_temp") == 0){
+    printf("Sorry, cannot use a file under copy_temp as the name.\n");
+  }
+  int check_status = check_and_remove_message(argv[2]);
+  if(check_status == -1){
     return 0;
   }
   char* message = argv[1];
   short* encoded_message = build_encoded_message(message);
-  int status = write_shorts_to_image("./img/image.png", encoded_message, strlen(message));
-  printf("Number of element written: %d\n", status);
+  int write_status = write_shorts_to_image(argv[2], encoded_message, strlen(message));
+  printf("Number of element written: %d\n", write_status);
+  if(write_status == strlen(message)){
+    printf("Succesfully write the message.\n");
+  }else{
+    printf("Something went wrong and the message wasn't written.\n");
+  }
   
+  return 0;
 }
 
 
@@ -27,7 +44,8 @@ short* build_encoded_message(char* message){
     unsigned char c1_encoded = hamming_encode(c1);
     unsigned char c2_encoded = hamming_encode(c2);
     // A lot of memory leak down here 
-    printf("original c: %c (%s) -> c1, %s | c2, %s\n", c, byte_from_char(c), byte_from_char(c1_encoded), byte_from_char(c2_encoded));
+    //printf("original c: %c (%s) -> c1, %s | c2, %s\n", c, byte_from_char(c), byte_from_char(c1_encoded), byte_from_char(c2_encoded));
+    // ^ debug only, memory leak if leave on
     short c_short = ((short) c1_encoded << 8) | (short) c2_encoded;
     encoded_m[i/2] = c_short;
 

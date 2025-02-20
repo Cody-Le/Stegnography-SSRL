@@ -1,15 +1,18 @@
 
 CC = gcc
+# for extension, change exe to out to use it in Linux
 EXT = exe
+# for clean, change del to rm
+CLEAN = del
 
-encode: encode.o utility.o image.o
+encode: encode.o utility.o image.o 
 	$(CC) -o encode.$(EXT) encode.o utility.o image.o 
 
 decode: decode.o utility.o image.o
 	$(CC) -o decode.$(EXT) decode.o utility.o image.o
 
 image.o: image.c image.h
-	$(CC) -c image.c
+	$(CC) -c image.c image.h
 
 utility.o: utility.c utility.h
 	$(CC) -c utility.c
@@ -29,4 +32,6 @@ run_decode: decode
 
 
 clean:
-	rm *.o *.out *~
+	del *.out
+	del *.exe
+	del *.o

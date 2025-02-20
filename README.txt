@@ -6,14 +6,27 @@ at the end of the image from the image directory. Decoding reads any potential m
 the image encoded and stored in the same way and output it out. 
 
 ## Dependencies
+The program is compiled with gcc 6.3.0.
 I didn't use any other libraries than the built in ones.
 - stdio.h
 - string.h
 - stdlib.h
 
+It is also compile on a Window machine. To be able to compile on Linux, you can make a few
+modification as below in the Makefile file
+- EXT = out
+- CLEAN = rm
 
 
-## Compile
+## Compile and run
+This program is compiled and ran on Window. 
+For encoding: 
+- make encode
+- ./encode.exe __MESSAGE_YOU__WANT__TO_HIDE ___IMG_PNG__DIRECTORY_
+
+For decoding:
+- make decode:
+- ./decode.exe 
 
 
 ## Extended Hamming(8,4) Code Encoding.

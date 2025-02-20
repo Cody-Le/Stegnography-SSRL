@@ -62,25 +62,48 @@ int message_length_from_file(FILE* file){
   
 }
 
+int ask_to_proceed(){
+  printf("There is a message hidden in the given image directory.\n");
+  printf("Would you like proceed and override the message? y for yes or any other character for no: ");
+  char answer;
+  scanf("%c", &answer);
+  if(answer == 'y'){
+    printf("proceeding!\n");
+    return 0;
+  }else{
+    printf("cancelling...\n");
+    return -1;
+  }
 
-void remove_message(char* img_dir){
-  FILE* file = fopen(img_dir, "a+");
+}
+
+int check_and_remove_message(char* img_dir){
+  FILE* file = fopen(img_dir, "a");
   if(file == NULL){
-    return;
+    perror("Unable to open file.\n");
+    return -1;
   }
   int message_length = message_length_from_file(file);
+  if(message_length <= 0){
+    printf("No message in the input image, proceeding!");
+    return 0;
+  }else{
+    if(ask_to_proceed() == -1){
+      return -1;
+    }
+  }
   
   fseek(file, -message_length * 2, SEEK_END);
-  if(message_length == 0){
-    return;
-  }
   unsigned long copy_to = ftell(file);
   printf("location %ld\n", copy_to);
-  char* new_image = copy_img_in_range(img_dir, "./img/new_image.png", copy_to);
+  char* new_image = copy_img_in_range(img_dir, "temp_img", copy_to);
+
   fclose(file);
   remove(img_dir);
   rename(new_image, img_dir);
+  return 0;
 }
+
 
 
 char* copy_img_in_range(char* in_img_dir, char* out_img_dir, unsigned long copy_to){
