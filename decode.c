@@ -1,19 +1,14 @@
-#include "image.h"
-#include "utility.h"
-#include <string.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
-
-bool head_parity_bit(char c_encoded);
-char* decode_message(EncodedMessage encoded_message);
-char dehamming_code(char c_encoded, int index);
-char correct_bits(char c, int index);
-char generate_correction_bit(char error);
+#include "decode.h"
 
 int main(int argc, char** argv){
-  char* img_dir = "./img/image.png";
-  EncodedMessage encoded_message = message_from_file(img_dir);
+  if(argc < 2){
+    printf("Please enter the directory to the image!\n");
+    return 0;
+  }
+  EncodedMessage encoded_message = message_from_file(argv[1]);
+  if(encoded_message.size == 0){
+    printf("No message were found in the file!");
+  }
   char* message = decode_message(encoded_message);
   printf("%s\n", message);
   free(encoded_message.data);

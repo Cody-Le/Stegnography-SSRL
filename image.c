@@ -19,6 +19,7 @@ EncodedMessage message_from_file(char* img_dir){
   EncodedMessage encoded_message;
   if(file == NULL){
     encoded_message.data = NULL;
+    encoded_message.size = 0;
     return encoded_message;
   }
   
@@ -85,7 +86,7 @@ int check_and_remove_message(char* img_dir){
   }
   int message_length = message_length_from_file(file);
   if(message_length <= 0){
-    printf("No message in the input image, proceeding!");
+    printf("No message in the input image, proceeding!\n");
     return 0;
   }else{
     if(ask_to_proceed() == -1){

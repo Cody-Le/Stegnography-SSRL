@@ -6,6 +6,7 @@ This program is responsible to for taking a message and image directory from
 the argument and encode it in the Hamming(8,4) extended format.
 */
 
+//Take in argument in format of: message img_dir
 int main(int argc, char** argv){
 
   
@@ -13,6 +14,7 @@ int main(int argc, char** argv){
     printf("Need to add arguments in format: message image_dir\n");
     return 0;
   }
+  //Name is not available because I use it for removing old message
   if(strcmp(argv[2], "copy_temp") == 0){
     printf("Sorry, cannot use a file under copy_temp as the name.\n");
   }
