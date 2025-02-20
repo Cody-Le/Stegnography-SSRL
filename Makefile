@@ -5,6 +5,8 @@ EXT = exe
 # for clean, change del to rm
 CLEAN = del
 
+all: encode decode
+
 encode: encode.o utility.o image.o 
 	$(CC) -o encode.$(EXT) encode.o utility.o image.o 
 
@@ -23,8 +25,7 @@ encode.o: encode.c encode.h utility.o image.o
 decode.o: decode.c utility.o image.o
 	$(CC) -c decode.c
 
-run_encode: encode
-	./encode.out hello
+
 
 
 run_decode: decode
@@ -32,6 +33,7 @@ run_decode: decode
 
 
 clean:
-	del *.out
-	del *.exe
-	del *.o
+	$(CLEAN) *.out
+	$(CLEAN) *.exe
+	$(CLEAN) *.o
+	$(CLEAN) *.h.gch

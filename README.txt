@@ -1,9 +1,9 @@
 This is the submission for the take home project for the SSRL application from Loc Le. 
 ## General
 The program contains two parts: encoding and decoding. Encoding take in a message and an image
-directory. It then encode the message in the 8 4 extended hamming code format and stores in
-at the end of the image from the image directory. Decoding reads any potential message from 
-the image encoded and stored in the same way and output it out. 
+directory. It then encode the message in an extended hamming(8,4) code format and stores in
+at the end of the image from the image directory. Decoding reads any potential stored and encoded 
+message in the same format from the imaage and output it out. 
 
 ## Dependencies
 The program is compiled with gcc 6.3.0.
@@ -13,19 +13,18 @@ I didn't use any other libraries than the built in ones.
 - stdlib.h
 
 It is also compile on a Window machine. To be able to compile on Linux, you can make a few
-modification as below in the Makefile file
+modification Makefile file:
 - EXT = out
 - CLEAN = rm
 
 
 ## Compile and run
-This program is compiled and ran on Window. 
 For encoding: 
 - make encode
 - ./encode.exe __MESSAGE_YOU__WANT__TO_HIDE ___IMG_PNG__DIRECTORY_
 
 For decoding:
-- make decode:
+- make decode
 - ./decode.exe 
 
 

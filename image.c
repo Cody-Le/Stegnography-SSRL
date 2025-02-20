@@ -78,7 +78,7 @@ int ask_to_proceed(){
 }
 
 int check_and_remove_message(char* img_dir){
-  FILE* file = fopen(img_dir, "a");
+  FILE* file = fopen(img_dir, "a+");
   if(file == NULL){
     perror("Unable to open file.\n");
     return -1;
