@@ -1,5 +1,13 @@
 #include "decode.h"
 
+/*This file is responsbile for decoding a message
+placed at the end of an image, encoded in Hamming(8,4)
+format. 
+*/
+
+
+//Main function, take in an image directory as an argument 
+//from the command line
 int main(int argc, char** argv){
   if(argc < 2){
     printf("Please enter the directory to the image!\n");
@@ -16,7 +24,9 @@ int main(int argc, char** argv){
 
 }
 
-
+/*
+Decode the message read from the bottom of the image. 
+*/
 char* decode_message(EncodedMessage encoded_message){
   
   char* message = (char*)malloc(sizeof(char) * (encoded_message.size + 1));
@@ -39,6 +49,10 @@ char* decode_message(EncodedMessage encoded_message){
   message[encoded_message.size] = '\0';
   return message;
 }
+
+//decode half a byte from it's hamming code
+//counter part. The index is passed in 
+//to print out the location of the bit flip
 char dehamming_code(char c_encoded, int index){
   c_encoded = correct_bits(c_encoded, index);
   char c = c_encoded & 15;
@@ -47,7 +61,8 @@ char dehamming_code(char c_encoded, int index){
 
 
 
-
+//Correcting any single bit flip that might have occured
+//and detect multiple bit flip cases. 
 char correct_bits(char c_encoded, int index){
   int* parity_matrix = get_parity_check_matrix();
   char error_location = byte_mul(c_encoded, parity_matrix, 7);
@@ -68,7 +83,7 @@ char correct_bits(char c_encoded, int index){
   return c_encoded ^ correction_bit;
 }
 
-//Check if the encoded parity bit is correct
+//Check if the encoded parity bit is correct.
 bool head_parity_bit(char c_encoded){
   char c_no_head = c_encoded & 127;
   int parity = 0;
@@ -82,7 +97,13 @@ bool head_parity_bit(char c_encoded){
 }
 
 
-
+/*
+Mapping the output of the parity check 
+from to the correct bit to flip. 
+Note: I am sure there is a better
+way to do this but for some reason
+I just can't figure so here we are. 
+*/
 char generate_correction_bit(char error){
   if(error == 4){
     return 1 << 6;

@@ -6,22 +6,25 @@ This program is responsible to for taking a message and image directory from
 the argument and encode it in the Hamming(8,4) extended format.
 */
 
-//Take in argument in format of: message img_dir
+//Take in argument in format of: message img_dir.
+//It assume that the image is of png file type.
 int main(int argc, char** argv){
 
-  
   if(argc < 3){
     printf("Need to add arguments in format: message image_dir\n");
     return 0;
   }
-  //Name is not available because I use it for removing old message
+  //Name is not available because I use it for removing old message.
   if(strcmp(argv[2], "copy_temp") == 0){
     printf("Sorry, cannot use a file under copy_temp as the name.\n");
   }
+
+  //Check if old message exits
   int check_status = check_and_remove_message(argv[2]);
   if(check_status == -1){
     return 0;
   }
+  //Encoded and write image to file.
   char* message = argv[1];
   short* encoded_message = build_encoded_message(message);
   int write_status = write_shorts_to_image(argv[2], encoded_message, strlen(message));
@@ -35,7 +38,10 @@ int main(int argc, char** argv){
   return 0;
 }
 
-
+/*
+For each character, it split the character into two parts, then encode 
+them and put them into a short to be written down onto the image. 
+*/
 short* build_encoded_message(char* message){
   int len = (int)strlen(message) * 2;
   short* encoded_m = (short*)malloc(strlen(message) * sizeof(short));
@@ -55,7 +61,7 @@ short* build_encoded_message(char* message){
   return encoded_m;
   
 }
-
+//Encoded half a character, the first four bits from the left is assumed to be zero
 char hamming_encode(char c){
   int* encode_matrix = get_generator_matrix();
   int encoded_byte = byte_mul((int) c, encode_matrix,4);
@@ -64,6 +70,7 @@ char hamming_encode(char c){
   return (char) with_head;
 }
 
+//Create a new bytes with an extend parity bit from the parity of the entire thing. 
 char head_parity_bit(char c){
   int parity = 0;
   int mask = 1;
