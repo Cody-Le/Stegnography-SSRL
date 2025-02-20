@@ -96,7 +96,6 @@ int check_and_remove_message(char* img_dir){
   
   fseek(file, -message_length * 2, SEEK_END);
   unsigned long copy_to = ftell(file);
-  printf("location %ld\n", copy_to);
   char* new_image = copy_img_in_range(img_dir, "temp_img", copy_to);
 
   fclose(file);

@@ -51,6 +51,8 @@ short* build_encoded_message(char* message){
     // A lot of memory leak down here 
     //printf("original c: %c (%s) -> c1, %s | c2, %s\n", c, byte_from_char(c), byte_from_char(c1_encoded), byte_from_char(c2_encoded));
     // ^ debug only, memory leak if leave on
+    
+    //This part could also be done using a Union too. 
     short c_short = ((short) c1_encoded << 8) | (short) c2_encoded;
     encoded_m[i/2] = c_short;
 
