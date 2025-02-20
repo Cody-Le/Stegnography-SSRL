@@ -38,10 +38,7 @@ int main(int argc, char** argv){
   return 0;
 }
 
-/*
-For each character, it split the character into two parts, then encode 
-them and put them into a short to be written down onto the image. 
-*/
+
 short* build_encoded_message(char* message){
   int len = (int)strlen(message) * 2;
   short* encoded_m = (short*)malloc(strlen(message) * sizeof(short));
@@ -61,7 +58,7 @@ short* build_encoded_message(char* message){
   return encoded_m;
   
 }
-//Encoded half a character, the first four bits from the left is assumed to be zero
+
 char hamming_encode(char c){
   int* encode_matrix = get_generator_matrix();
   int encoded_byte = byte_mul((int) c, encode_matrix,4);
@@ -70,7 +67,7 @@ char hamming_encode(char c){
   return (char) with_head;
 }
 
-//Create a new bytes with an extend parity bit from the parity of the entire thing. 
+ 
 char head_parity_bit(char c){
   int parity = 0;
   int mask = 1;
